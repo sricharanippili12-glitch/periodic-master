@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Periodic Master — 118 Elements</title>
+
+<style>
+:root{
+  --bg:#0f1220;
+  --panel:#181c33;
+  --text:#ffffff;
+  --correct:#22c55e;
+  --wrong:#ef4444;
+  --streak:#38bdf8;
+}
+body{
+  margin:0;
+  font-family:Segoe UI, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 30px;
+  background:#11142a;
+}
+nav button{
+  margin-left:10px;
+  padding:10px 16px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  background:#2b2f55;
+  color:white;
+  font-weight:600;
+}
+.page{display:none;padding:25px;}
+.page.active{display:block}
+
+/* TABLE */
+.table{
+  display:grid;
+  grid-template-columns:repeat(18,70px);
+  gap:5px;
+  justify-content:center;
+}
+.element{
+  border-radius:10px;
+  padding:6px;
+  min-height:75px;
+  text-align:center;
+  cursor:pointer;
+  transition:.2s;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.element:hover{transform:scale(1.1)}
+.num{font-size:10px;opacity:.7}
+.sym{font-size:18px;font-weight:600}
+.name{font-size:9px;opacity:.85}
+
+/* COLORS */
+.alkali{background:#ff6b6b}
+.alkaline{background:#feca57}
+.transition{background:#48dbfb}
+.post{background:#1dd1a1}
+.metalloid{background:#a29bfe}
+.nonmetal{background:#54a0ff}
+.halogen{background:#ff9ff3}
+.noble{background:#c8d6e5;color:#000}
+.lanth{background:#ffb142}
+.act{background:#ff793f}
+
+/* GAME */
+.game-box{
+  max-width:600px;
+  margin:auto;
+  background:var(--panel);
+  padding:25px;
+  border-radius:20px;
+  text-align:center;
+}
+.options button{
+  width:100%;
+  margin-top:10px;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  background:#2b2f55;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
+.options button:hover{background:#3f458a}
+.feedback{
+  margin-top:15px;
+  padding:12px;
+  border-radius:12px;
+  font-weight:700;
+  display:none;
+}
+.correct{background:var(--correct);color:#000}
+.wrong{background:var(--wrong);color:#fff}
+#nextBtn{
+  margin-top:15px;
+  padding:10px 20px;
+  border:none;
+  border-radius:12px;
+  background:#3f458a;
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+  display:none;
+}
+
+/* DETAIL */
+.detail-box{
+  max-width:600px;
+  margin:auto;
+  background:var(--panel);
+  padding:25px;
+  border-radius:20px;
+}
+.detail-box h2{text-align:center;color:#38bdf8}
+#backBtn{
+  margin-top:15px;
+  padding:10px 20px;
+  border:none;
+  border-radius:12px;
+  background:#3f458a;
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>🧪 Periodic Master</h2>
+  <nav>
+    <button onclick="showPage('table')">Periodic Table</button>
+    <button onclick="showPage('game')">Play Game</button>
+    <button onclick="location.href='drag.html'">Drag & Drop</button>
+  </nav>
+</header>
+
+<!-- TABLE -->
+<div id="table" class="page active">
+  <h2 style="text-align:center">Periodic Table (1–118)</h2>
+  <div class="table" id="ptable"></div>
+</div>
+
+<!-- GAME -->
+<div id="game" class="page">
+  <div class="game-box">
+    <h2 id="q"></h2>
+    <div class="options" id="opt"></div>
+    <div id="feedback" class="feedback"></div>
+    <button id="nextBtn" onclick="newQ()">Next</button>
+    <p style="margin-top:10px">Score: <span id="score">0</span></p>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<div id="detail" class="page">
+  <div class="detail-box">
+    <h2 id="dName"></h2>
+    <p><b>Symbol:</b> <span id="dSymbol"></span></p>
+    <p><b>Atomic No:</b> <span id="dAtomic"></span></p>
+    <p><b>Mass:</b> <span id="dMass"></span></p>
+    <p><b>Group:</b> <span id="dGroup"></span></p>
+    <p><b>Period:</b> <span id="dPeriod"></span></p>
+    <p><b>Category:</b> <span id="dCat"></span></p>
+    <button id="backBtn" onclick="showPage('table')">Back</button>
+  </div>
+</div>
+
+<script>
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* ELEMENT DATA (118) */
+const elements=[{n:1,s:"H",name:"Hydrogen",g:1,p:1,c:"nonmetal",mass:"1.008",valency:"1",uses:"Rocket fuel, fuel cells"},
+  {n:2,s:"He",name:"Helium",g:18,p:1,c:"noble",mass:"4.0026",valency:"0",uses:"Balloons, cryogenics"},
+  {n:3,s:"Li",name:"Lithium",g:1,p:2,c:"alkali",mass:"6.94",valency:"1",uses:"Rechargeable batteries"},
+  {n:4,s:"Be",name:"Beryllium",g:2,p:2,c:"alkaline",mass:"9.0122",valency:"2",uses:"Aerospace alloys"},
+  {n:5,s:"B",name:"Boron",g:13,p:2,c:"metalloid",mass:"10.81",valency:"3",uses:"Glass, detergents"},
+  {n:6,s:"C",name:"Carbon",g:14,p:2,c:"nonmetal",mass:"12.011",valency:"4",uses:"All organic compounds"},
+  {n:7,s:"N",name:"Nitrogen",g:15,p:2,c:"nonmetal",mass:"14.007",valency:"3",uses:"Fertilizers, explosives"},
+  {n:8,s:"O",name:"Oxygen",g:16,p:2,c:"nonmetal",mass:"15.999",valency:"2",uses:"Respiration, steelmaking"},
+  {n:9,s:"F",name:"Fluorine",g:17,p:2,c:"halogen",mass:"18.998",valency:"1",uses:"Teflon, toothpaste additives"},
+  {n:10,s:"Ne",name:"Neon",g:18,p:2,c:"noble",mass:"20.180",valency:"0",uses:"Neon lights"},
+  {n:11,s:"Na",name:"Sodium",g:1,p:3,c:"alkali",mass:"22.990",valency:"1",uses:"Salt"},
+  {n:12,s:"Mg",name:"Magnesium",g:2,p:3,c:"alkaline",mass:"24.305",valency:"2",uses:"Alloys, lightweight metal"},
+  {n:13,s:"Al",name:"Aluminium",g:13,p:3,c:"post",mass:"26.982",valency:"3",uses:"Foil, aircraft"},
+  {n:14,s:"Si",name:"Silicon",g:14,p:3,c:"metalloid",mass:"28.085",valency:"4",uses:"Semiconductors, glass"},
+  {n:15,s:"P",name:"Phosphorus",g:15,p:3,c:"nonmetal",mass:"30.974",valency:"3",uses:"Fertilizers"},
+  {n:16,s:"S",name:"Sulfur",g:16,p:3,c:"nonmetal",mass:"32.06",valency:"2",uses:"Sulfuric acid manufacturing"},
+  {n:17,s:"Cl",name:"Chlorine",g:17,p:3,c:"halogen",mass:"35.45",valency:"1",uses:"Water purification"},
+  {n:18,s:"Ar",name:"Argon",g:18,p:3,c:"noble",mass:"39.948",valency:"0",uses:"Inert shielding gas"},
+  {n:19,s:"K",name:"Potassium",g:1,p:4,c:"alkali",mass:"39.098",valency:"1",uses:"Fertilizers"},
+  {n:20,s:"Ca",name:"Calcium",g:2,p:4,c:"alkaline",mass:"40.078",valency:"2",uses:"Bones, cement"},
+  {n:21,s:"Sc",name:"Scandium",g:3,p:4,c:"transition",mass:"44.956",valency:"3",uses:"Aerospace alloys"},
+  {n:22,s:"Ti",name:"Titanium",g:4,p:4,c:"transition",mass:"47.867",valency:"4",uses:"Aircraft, implants"},
+  {n:23,s:"V",name:"Vanadium",g:5,p:4,c:"transition",mass:"50.942",valency:"5",uses:"Steel alloys"},
+  {n:24,s:"Cr",name:"Chromium",g:6,p:4,c:"transition",mass:"51.996",valency:"3,6",uses:"Stainless steel"},
+  {n:25,s:"Mn",name:"Manganese",g:7,p:4,c:"transition",mass:"54.938",valency:"2,4,7",uses:"Steel production"},
+  {n:26,s:"Fe",name:"Iron",g:8,p:4,c:"transition",mass:"55.845",valency:"2,3",uses:"Steel, construction"},
+  {n:27,s:"Co",name:"Cobalt",g:9,p:4,c:"transition",mass:"58.933",valency:"2,3",uses:"Batteries"},
+  {n:28,s:"Ni",name:"Nickel",g:10,p:4,c:"transition",mass:"58.693",valency:"2,3",uses:"Stainless steel"},
+  {n:29,s:"Cu",name:"Copper",g:11,p:4,c:"transition",mass:"63.546",valency:"2",uses:"Electrical wiring"},
+  {n:30,s:"Zn",name:"Zinc",g:12,p:4,c:"transition",mass:"65.38",valency:"2",uses:"Galvanizing"},
+  {n:31,s:"Ga",name:"Gallium",g:13,p:4,c:"post",mass:"69.723",valency:"3",uses:"Electronics"},
+  {n:32,s:"Ge",name:"Germanium",g:14,p:4,c:"metalloid",mass:"72.630",valency:"4",uses:"Semiconductors"},
+  {n:33,s:"As",name:"Arsenic",g:15,p:4,c:"metalloid",mass:"74.922",valency:"3",uses:"Pesticides (limited)"},
+  {n:34,s:"Se",name:"Selenium",g:16,p:4,c:"nonmetal",mass:"78.971",valency:"2,4",uses:"Photocells"},
+  {n:35,s:"Br",name:"Bromine",g:17,p:4,c:"halogen",mass:"79.904",valency:"1",uses:"Flame retardants"},
+  {n:36,s:"Kr",name:"Krypton",g:18,p:4,c:"noble",mass:"83.798",valency:"0",uses:"Lights"},
+  {n:37,s:"Rb",name:"Rubidium",g:1,p:5,c:"alkali",mass:"85.468",valency:"1",uses:"Research"},
+  {n:38,s:"Sr",name:"Strontium",g:2,p:5,c:"alkaline",mass:"87.62",valency:"2",uses:"Fireworks"},
+  {n:39,s:"Y",name:"Yttrium",g:3,p:5,c:"transition",mass:"88.906",valency:"3",uses:"LEDs"},
+  {n:40,s:"Zr",name:"Zirconium",g:4,p:5,c:"transition",mass:"91.224",valency:"4",uses:"Nuclear reactors"},
+  {n:41,s:"Nb",name:"Niobium",g:5,p:5,c:"transition",mass:"92.906",valency:"5",uses:"Superalloys"},
+  {n:42,s:"Mo",name:"Molybdenum",g:6,p:5,c:"transition",mass:"95.95",valency:"6",uses:"Steel alloys"},
+  {n:43,s:"Tc",name:"Technetium",g:7,p:5,c:"transition",mass:"98",valency:"7",uses:"Medical imaging"},
+  {n:44,s:"Ru",name:"Ruthenium",g:8,p:5,c:"transition",mass:"101.07",valency:"4",uses:"Electronics"},
+  {n:45,s:"Rh",name:"Rhodium",g:9,p:5,c:"transition",mass:"102.91",valency:"3",uses:"Catalysts"},
+  {n:46,s:"Pd",name:"Palladium",g:10,p:5,c:"transition",mass:"106.42",valency:"0",uses:"Catalytic converters"},
+  {n:47,s:"Ag",name:"Silver",g:11,p:5,c:"transition",mass:"107.87",valency:"1",uses:"Jewelry, electronics"},
+  {n:48,s:"Cd",name:"Cadmium",g:12,p:5,c:"transition",mass:"112.41",valency:"2",uses:"Batteries"},
+  {n:49,s:"In",name:"Indium",g:13,p:5,c:"post",mass:"114.82",valency:"3",uses:"Electronics"},
+  {n:50,s:"Sn",name:"Tin",g:14,p:5,c:"post",mass:"118.71",valency:"2",uses:"Solder"},
+  {n:51,s:"Sb",name:"Antimony",g:15,p:5,c:"metalloid",mass:"121.76",valency:"3",uses:"Flame retardants"},
+  {n:52,s:"Te",name:"Tellurium",g:16,p:5,c:"metalloid",mass:"127.60",valency:"2,4",uses:"Alloys"},
+  {n:53,s:"I",name:"Iodine",g:17,p:5,c:"halogen",mass:"126.90",valency:"1",uses:"Disinfectants"},
+  {n:54,s:"Xe",name:"Xenon",g:18,p:5,c:"noble",mass:"131.29",valency:"0",uses:"Lights, anesthesia"},
+  {n:55,s:"Cs",name:"Cesium",g:1,p:6,c:"alkali",mass:"132.91",valency:"1",uses:"Atomic clocks"},
+  {n:56,s:"Ba",name:"Barium",g:2,p:6,c:"alkaline",mass:"137.33",valency:"2",uses:"Medical imaging"},
+  {n:57,s:"La",name:"Lanthanum",g:3,p:6,c:"lanth",mass:"138.91",valency:"3",uses:"Optics"},
+  {n:58,s:"Ce",name:"Cerium",g:3,p:6,c:"lanth",mass:"140.12",valency:"3",uses:"Catalysts"},
+  {n:59,s:"Pr",name:"Praseodymium",g:3,p:6,c:"lanth",mass:"140.91",valency:"3",uses:"Magnets"},
+  {n:60,s:"Nd",name:"Neodymium",g:3,p:6,c:"lanth",mass:"144.24",valency:"3",uses:"Strong magnets"},
+  {n:61,s:"Pm",name:"Promethium",g:3,p:6,c:"lanth",mass:"145",valency:"3",uses:"Research"},
+  {n:62,s:"Sm",name:"Samarium",g:3,p:6,c:"lanth",mass:"150.36",valency:"3",uses:"Magnets"},
+  {n:63,s:"Eu",name:"Europium",g:3,p:6,c:"lanth",mass:"151.96",valency:"3",uses:"Phosphors"},
+  {n:64,s:"Gd",name:"Gadolinium",g:3,p:6,c:"lanth",mass:"157.25",valency:"3",uses:"MRI contrast"},
+  {n:65,s:"Tb",name:"Terbium",g:3,p:6,c:"lanth",mass:"158.93",valency:"3",uses:"Phosphors"},
+  {n:66,s:"Dy",name:"Dysprosium",g:3,p:6,c:"lanth",mass:"162.50",valency:"3",uses:"Magnets"},
+  {n:67,s:"Ho",name:"Holmium",g:3,p:6,c:"lanth",mass:"164.93",valency:"3",uses:"Magnets"},
+  {n:68,s:"Er",name:"Erbium",g:3,p:6,c:"lanth",mass:"167.26",valency:"3",uses:"Lasers"},
+  {n:69,s:"Tm",name:"Thulium",g:3,p:6,c:"lanth",mass:"168.93",valency:"3",uses:"Lasers"},
+  {n:70,s:"Yb",name:"Ytterbium",g:3,p:6,c:"lanth",mass:"173.05",valency:"3",uses:"Alloys"},
+  {n:71,s:"Lu",name:"Lutetium",g:3,p:6,c:"lanth",mass:"174.97",valency:"3",uses:"Petroleum cracking"},
+  {n:72,s:"Hf",name:"Hafnium",g:4,p:6,c:"transition",mass:"178.49",valency:"4",uses:"Alloys"},
+  {n:73,s:"Ta",name:"Tantalum",g:5,p:6,c:"transition",mass:"180.95",valency:"5",uses:"Electronics"},
+  {n:74,s:"W",name:"Tungsten",g:6,p:6,c:"transition",mass:"183.84",valency:"6",uses:"Lightbulb filaments"},
+  {n:75,s:"Re",name:"Rhenium",g:7,p:6,c:"transition",mass:"186.21",valency:"7",uses:"Superalloys"},
+  {n:76,s:"Os",name:"Osmium",g:8,p:6,c:"transition",mass:"190.23",valency:"4",uses:"Alloys"},
+  {n:77,s:"Ir",name:"Iridium",g:9,p:6,c:"transition",mass:"192.22",valency:"3",uses:"Spark plugs"},
+  {n:78,s:"Pt",name:"Platinum",g:10,p:6,c:"transition",mass:"195.08",valency:"2",uses:"Catalysts"},
+  {n:79,s:"Au",name:"Gold",g:11,p:6,c:"transition",mass:"196.97",valency:"1",uses:"Jewelry, electronics"},
+  {n:80,s:"Hg",name:"Mercury",g:12,p:6,c:"transition",mass:"200.59",valency:"2",uses:"Thermometers"},
+  {n:81,s:"Tl",name:"Thallium",g:13,p:6,c:"post",mass:"204.38",valency:"3",uses:"Electronics"},
+  {n:82,s:"Pb",name:"Lead",g:14,p:6,c:"post",mass:"207.2",valency:"2",uses:"Batteries"},
+  {n:83,s:"Bi",name:"Bismuth",g:15,p:6,c:"post",mass:"208.98",valency:"3",uses:"Pepto‑Bismol (medicinal)"},
+  {n:84,s:"Po",name:"Polonium",g:16,p:6,c:"post",mass:"209",valency:"2",uses:"Research"},
+  {n:85,s:"At",name:"Astatine",g:17,p:6,c:"halogen",mass:"210",valency:"1",uses:"Research"},
+  {n:86,s:"Rn",name:"Radon",g:18,p:6,c:"noble",mass:"222",valency:"0",uses:"Radiotherapy"},
+  {n:87,s:"Fr",name:"Francium",g:1,p:7,c:"alkali",mass:"223",valency:"1",uses:"Research"},
+  {n:88,s:"Ra",name:"Radium",g:2,p:7,c:"alkaline",mass:"226",valency:"2",uses:"Medical research"},
+  {n:89,s:"Ac",name:"Actinium",g:3,p:7,c:"act",mass:"227",valency:"3",uses:"Radiation sources"},
+  {n:90,s:"Th",name:"Thorium",g:3,p:7,c:"act",mass:"232.04",valency:"4",uses:"Nuclear fuel"},
+  {n:91,s:"Pa",name:"Protactinium",g:3,p:7,c:"act",mass:"231.04",valency:"5",uses:"Research"},
+  {n:92,s:"U",name:"Uranium",g:3,p:7,c:"act",mass:"238.03",valency:"6",uses:"Nuclear fuel"},
+  {n:93,s:"Np",name:"Neptunium",g:3,p:7,c:"act",mass:"237",valency:"5",uses:"Research"},
+  {n:94,s:"Pu",name:"Plutonium",g:3,p:7,c:"act",mass:"244",valency:"6",uses:"Nuclear reactors"},
+  {n:95,s:"Am",name:"Americium",g:3,p:7,c:"act",mass:"243",valency:"3",uses:"Smoke detectors"},
+  {n:96,s:"Cm",name:"Curium",g:3,p:7,c:"act",mass:"247",valency:"3",uses:"Research"},
+  {n:97,s:"Bk",name:"Berkelium",g:3,p:7,c:"act",mass:"247",valency:"3",uses:"Research"},
+  {n:98,s:"Cf",name:"Californium",g:3,p:7,c:"act",mass:"251",valency:"3",uses:"Neutron sources"},
+  {n:99,s:"Es",name:"Einsteinium",g:3,p:7,c:"act",mass:"252",valency:"3",uses:"Research"},
+  {n:100,s:"Fm",name:"Fermium",g:3,p:7,c:"act",mass:"257",valency:"3",uses:"Research"},
+  {n:101,s:"Md",name:"Mendelevium",g:3,p:7,c:"act",mass:"258",valency:"2",uses:"Research"},
+  {n:102,s:"No",name:"Nobelium",g:3,p:7,c:"act",mass:"259",valency:"2",uses:"Research"},
+  {n:103,s:"Lr",name:"Lawrencium",g:3,p:7,c:"act",mass:"266",valency:"3",uses:"Research"},
+  {n:104,s:"Rf",name:"Rutherfordium",g:4,p:7,c:"transition",mass:"267",valency:"4",uses:"Research"},
+  {n:105,s:"Db",name:"Dubnium",g:5,p:7,c:"transition",mass:"268",valency:"5",uses:"Research"},
+  {n:106,s:"Sg",name:"Seaborgium",g:6,p:7,c:"transition",mass:"269",valency:"6",uses:"Research"},
+  {n:107,s:"Bh",name:"Bohrium",g:7,p:7,c:"transition",mass:"270",valency:"7",uses:"Research"},
+  {n:108,s:"Hs",name:"Hassium",g:8,p:7,c:"transition",mass:"277",valency:"8",uses:"Research"},
+  {n:109,s:"Mt",name:"Meitnerium",g:9,p:7,c:"transition",mass:"278",valency:"9",uses:"Research"},
+  {n:110,s:"Ds",name:"Darmstadtium",g:10,p:7,c:"transition",mass:"281",valency:"10",uses:"Research"},
+  {n:111,s:"Rg",name:"Roentgenium",g:11,p:7,c:"transition",mass:"282",valency:"11",uses:"Research"},
+  {n:112,s:"Cn",name:"Copernicium",g:12,p:7,c:"transition",mass:"285",valency:"12",uses:"Research"},
+  {n:113,s:"Nh",name:"Nihonium",g:13,p:7,c:"post",mass:"286",valency:"3",uses:"Research"},
+  {n:114,s:"Fl",name:"Flerovium",g:14,p:7,c:"post",mass:"289",valency:"4",uses:"Research"},
+  {n:115,s:"Mc",name:"Moscovium",g:15,p:7,c:"post",mass:"290",valency:"5",uses:"Research"},
+  {n:116,s:"Lv",name:"Livermorium",g:16,p:7,c:"post",mass:"293",valency:"6",uses:"Research"},
+  {n:117,s:"Ts",name:"Tennessine",g:17,p:7,c:"halogen",mass:"294",valency:"1",uses:"Research"},
+  {n:118,s:"Og",name:"Oganesson",g:18,p:7,c:"noble",mass:"294",valency:"0",uses:"Scientific research"}
+]
+
+/* BUILD TABLE */
+const table=document.getElementById("ptable");
+elements.forEach(e=>{
+  const d=document.createElement("div");
+  d.className=`element ${e.c}`;
+  d.innerHTML=`<div class="num">${e.n}</div>
+               <div class="sym">${e.s}</div>
+               <div class="name">${e.name}</div>`;
+  d.onclick=()=>showDetail(e);
+  table.appendChild(d);
+});
+
+/* DETAIL */
+function showDetail(e){
+  showPage('detail');
+  dName.innerText=e.name;
+  dSymbol.innerText=e.s;
+  dAtomic.innerText=e.n;
+  dMass.innerText=e.mass || "-";
+  dGroup.innerText=e.g;
+  dPeriod.innerText=e.p;
+  dCat.innerText=e.c;
+}
+
+/* GAME */
+let score=0,current;
+function newQ(){
+  feedback.style.display="none";
+  nextBtn.style.display="none";
+  current=elements[Math.floor(Math.random()*elements.length)];
+  q.innerText=`Which group does ${current.name} belong to?`;
+  opt.innerHTML="";
+  let opts=[current.g];
+  while(opts.length<4){
+    let r=Math.floor(Math.random()*18)+1;
+    if(!opts.includes(r))opts.push(r);
+  }
+  opts.sort(()=>Math.random()-0.5).forEach(o=>{
+    const b=document.createElement("button");
+    b.innerText="Group "+o;
+    b.onclick=()=>check(o);
+    opt.appendChild(b);
+  });
+}
+function check(a){
+  feedback.style.display="block";
+  nextBtn.style.display="block";
+  if(a===current.g){
+    score++;
+    feedback.className="feedback correct";
+    feedback.innerText="Correct!";
+  }else{
+    feedback.className="feedback wrong";
+    feedback.innerText=`Wrong! Correct: Group ${current.g}`;
+  }
+  scoreEl.innerText=score;
+}
+newQ();
+</script>
+
+</body>
+</html>

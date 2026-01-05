@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)file:///C:/Users/NSPIRA/Downloads/9.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Periodic Table Drag &amp; Drop Game</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #1a1a1a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  h1 {
+    margin-bottom: 20px;
+  }
+  .periodic-table {
+    display: grid;
+    grid-template-columns: repeat(18, 60px);
+    grid-auto-rows: 60px;
+    gap: 4px;
+    background: #222;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  .element-slot, .element {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  .element-slot {
+    background: #333;
+    border: 1px dashed #555;
+  }
+  .element {
+    background: #4caf50;
+    border: 1px solid #fff;
+    color: #fff;
+  }
+  .element.dragging {
+    opacity: 0.5;
+  }
+  .element.correct {
+    background: #2196f3 !important;
+    border: 1px solid #fff;
+  }
+  .elements-pool {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    gap: 4px;
+    max-width: 1080px;
+    justify-content: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>Periodic Table Drag &amp; Drop</h1>
+
+<div class="periodic-table" id="table"><div class="element-slot" data-group="1" data-period="1"></div><div class="element-slot" data-group="2" data-period="1"></div><div class="element-slot" data-group="3" data-period="1"></div><div class="element-slot" data-group="4" data-period="1"></div><div class="element-slot" data-group="5" data-period="1"></div><div class="element-slot" data-group="6" data-period="1"></div><div class="element-slot" data-group="7" data-period="1"></div><div class="element-slot" data-group="8" data-period="1"></div><div class="element-slot" data-group="9" data-period="1"></div><div class="element-slot" data-group="10" data-period="1"></div><div class="element-slot" data-group="11" data-period="1"></div><div class="element-slot" data-group="12" data-period="1"></div><div class="element-slot" data-group="13" data-period="1"></div><div class="element-slot" data-group="14" data-period="1"></div><div class="element-slot" data-group="15" data-period="1"></div><div class="element-slot" data-group="16" data-period="1"></div><div class="element-slot" data-group="17" data-period="1"></div><div class="element-slot" data-group="18" data-period="1"></div><div class="element-slot" data-group="1" data-period="2"></div><div class="element-slot" data-group="2" data-period="2"></div><div class="element-slot" data-group="3" data-period="2"></div><div class="element-slot" data-group="4" data-period="2"></div><div class="element-slot" data-group="5" data-period="2"></div><div class="element-slot" data-group="6" data-period="2"></div><div class="element-slot" data-group="7" data-period="2"></div><div class="element-slot" data-group="8" data-period="2"></div><div class="element-slot" data-group="9" data-period="2"></div><div class="element-slot" data-group="10" data-period="2"></div><div class="element-slot" data-group="11" data-period="2"></div><div class="element-slot" data-group="12" data-period="2"></div><div class="element-slot" data-group="13" data-period="2"></div><div class="element-slot" data-group="14" data-period="2"></div><div class="element-slot" data-group="15" data-period="2"></div><div class="element-slot" data-group="16" data-period="2"></div><div class="element-slot" data-group="17" data-period="2"></div><div class="element-slot" data-group="18" data-period="2"></div><div class="element-slot" data-group="1" data-period="3"></div><div class="element-slot" data-group="2" data-period="3"></div><div class="element-slot" data-group="3" data-period="3"></div><div class="element-slot" data-group="4" data-period="3"></div><div class="element-slot" data-group="5" data-period="3"></div><div class="element-slot" data-group="6" data-period="3"></div><div class="element-slot" data-group="7" data-period="3"></div><div class="element-slot" data-group="8" data-period="3"></div><div class="element-slot" data-group="9" data-period="3"></div><div class="element-slot" data-group="10" data-period="3"></div><div class="element-slot" data-group="11" data-period="3"></div><div class="element-slot" data-group="12" data-period="3"></div><div class="element-slot" data-group="13" data-period="3"></div><div class="element-slot" data-group="14" data-period="3"></div><div class="element-slot" data-group="15" data-period="3"></div><div class="element-slot" data-group="16" data-period="3"></div><div class="element-slot" data-group="17" data-period="3"></div><div class="element-slot" data-group="18" data-period="3"></div><div class="element-slot" data-group="1" data-period="4"></div><div class="element-slot" data-group="2" data-period="4"></div><div class="element-slot" data-group="3" data-period="4"></div><div class="element-slot" data-group="4" data-period="4"></div><div class="element-slot" data-group="5" data-period="4"></div><div class="element-slot" data-group="6" data-period="4"></div><div class="element-slot" data-group="7" data-period="4"></div><div class="element-slot" data-group="8" data-period="4"></div><div class="element-slot" data-group="9" data-period="4"></div><div class="element-slot" data-group="10" data-period="4"></div><div class="element-slot" data-group="11" data-period="4"></div><div class="element-slot" data-group="12" data-period="4"></div><div class="element-slot" data-group="13" data-period="4"></div><div class="element-slot" data-group="14" data-period="4"></div><div class="element-slot" data-group="15" data-period="4"></div><div class="element-slot" data-group="16" data-period="4"></div><div class="element-slot" data-group="17" data-period="4"></div><div class="element-slot" data-group="18" data-period="4"></div><div class="element-slot" data-group="1" data-period="5"></div><div class="element-slot" data-group="2" data-period="5"></div><div class="element-slot" data-group="3" data-period="5"></div><div class="element-slot" data-group="4" data-period="5"></div><div class="element-slot" data-group="5" data-period="5"></div><div class="element-slot" data-group="6" data-period="5"></div><div class="element-slot" data-group="7" data-period="5"></div><div class="element-slot" data-group="8" data-period="5"></div><div class="element-slot" data-group="9" data-period="5"></div><div class="element-slot" data-group="10" data-period="5"></div><div class="element-slot" data-group="11" data-period="5"></div><div class="element-slot" data-group="12" data-period="5"></div><div class="element-slot" data-group="13" data-period="5"></div><div class="element-slot" data-group="14" data-period="5"></div><div class="element-slot" data-group="15" data-period="5"></div><div class="element-slot" data-group="16" data-period="5"></div><div class="element-slot" data-group="17" data-period="5"></div><div class="element-slot" data-group="18" data-period="5"></div><div class="element-slot" data-group="1" data-period="6"></div><div class="element-slot" data-group="2" data-period="6"></div><div class="element-slot" data-group="3" data-period="6"></div><div class="element-slot" data-group="4" data-period="6"></div><div class="element-slot" data-group="5" data-period="6"></div><div class="element-slot" data-group="6" data-period="6"></div><div class="element-slot" data-group="7" data-period="6"></div><div class="element-slot" data-group="8" data-period="6"></div><div class="element-slot" data-group="9" data-period="6"></div><div class="element-slot" data-group="10" data-period="6"></div><div class="element-slot" data-group="11" data-period="6"></div><div class="element-slot" data-group="12" data-period="6"></div><div class="element-slot" data-group="13" data-period="6"></div><div class="element-slot" data-group="14" data-period="6"></div><div class="element-slot" data-group="15" data-period="6"></div><div class="element-slot" data-group="16" data-period="6"></div><div class="element-slot" data-group="17" data-period="6"></div><div class="element-slot" data-group="18" data-period="6"></div><div class="element-slot" data-group="1" data-period="7"></div><div class="element-slot" data-group="2" data-period="7"></div><div class="element-slot" data-group="3" data-period="7"></div><div class="element-slot" data-group="4" data-period="7"></div><div class="element-slot" data-group="5" data-period="7"></div><div class="element-slot" data-group="6" data-period="7"></div><div class="element-slot" data-group="7" data-period="7"></div><div class="element-slot" data-group="8" data-period="7"></div><div class="element-slot" data-group="9" data-period="7"></div><div class="element-slot" data-group="10" data-period="7"></div><div class="element-slot" data-group="11" data-period="7"></div><div class="element-slot" data-group="12" data-period="7"></div><div class="element-slot" data-group="13" data-period="7"></div><div class="element-slot" data-group="14" data-period="7"></div><div class="element-slot" data-group="15" data-period="7"></div><div class="element-slot" data-group="16" data-period="7"></div><div class="element-slot" data-group="17" data-period="7"></div><div class="element-slot" data-group="18" data-period="7"></div></div>
+
+<div class="elements-pool" id="pool"><div class="element" draggable="true" data-group="1" data-period="1">H</div><div class="element" draggable="true" data-group="18" data-period="1">He</div><div class="element" draggable="true" data-group="1" data-period="2">Li</div><div class="element" draggable="true" data-group="2" data-period="2">Be</div><div class="element" draggable="true" data-group="13" data-period="2">B</div><div class="element" draggable="true" data-group="14" data-period="2">C</div><div class="element" draggable="true" data-group="15" data-period="2">N</div><div class="element" draggable="true" data-group="16" data-period="2">O</div><div class="element" draggable="true" data-group="17" data-period="2">F</div><div class="element" draggable="true" data-group="18" data-period="2">Ne</div><div class="element" draggable="true" data-group="1" data-period="3">Na</div><div class="element" draggable="true" data-group="2" data-period="3">Mg</div><div class="element" draggable="true" data-group="13" data-period="3">Al</div><div class="element" draggable="true" data-group="14" data-period="3">Si</div><div class="element" draggable="true" data-group="15" data-period="3">P</div><div class="element" draggable="true" data-group="16" data-period="3">S</div><div class="element" draggable="true" data-group="17" data-period="3">Cl</div><div class="element" draggable="true" data-group="18" data-period="3">Ar</div><div class="element" draggable="true" data-group="1" data-period="4">K</div><div class="element" draggable="true" data-group="2" data-period="4">Ca</div><div class="element" draggable="true" data-group="3" data-period="4">Sc</div><div class="element" draggable="true" data-group="4" data-period="4">Ti</div><div class="element" draggable="true" data-group="5" data-period="4">V</div><div class="element" draggable="true" data-group="6" data-period="4">Cr</div><div class="element" draggable="true" data-group="7" data-period="4">Mn</div><div class="element" draggable="true" data-group="8" data-period="4">Fe</div><div class="element" draggable="true" data-group="9" data-period="4">Co</div><div class="element" draggable="true" data-group="10" data-period="4">Ni</div><div class="element" draggable="true" data-group="11" data-period="4">Cu</div><div class="element" draggable="true" data-group="12" data-period="4">Zn</div><div class="element" draggable="true" data-group="13" data-period="4">Ga</div><div class="element" draggable="true" data-group="14" data-period="4">Ge</div><div class="element" draggable="true" data-group="15" data-period="4">As</div><div class="element" draggable="true" data-group="16" data-period="4">Se</div><div class="element" draggable="true" data-group="17" data-period="4">Br</div><div class="element" draggable="true" data-group="18" data-period="4">Kr</div><div class="element" draggable="true" data-group="1" data-period="5">Rb</div><div class="element" draggable="true" data-group="2" data-period="5">Sr</div><div class="element" draggable="true" data-group="3" data-period="5">Y</div><div class="element" draggable="true" data-group="4" data-period="5">Zr</div><div class="element" draggable="true" data-group="5" data-period="5">Nb</div><div class="element" draggable="true" data-group="6" data-period="5">Mo</div><div class="element" draggable="true" data-group="7" data-period="5">Tc</div><div class="element" draggable="true" data-group="8" data-period="5">Ru</div><div class="element" draggable="true" data-group="9" data-period="5">Rh</div><div class="element" draggable="true" data-group="10" data-period="5">Pd</div><div class="element" draggable="true" data-group="11" data-period="5">Ag</div><div class="element" draggable="true" data-group="12" data-period="5">Cd</div><div class="element" draggable="true" data-group="13" data-period="5">In</div><div class="element" draggable="true" data-group="14" data-period="5">Sn</div><div class="element" draggable="true" data-group="15" data-period="5">Sb</div><div class="element" draggable="true" data-group="16" data-period="5">Te</div><div class="element" draggable="true" data-group="17" data-period="5">I</div><div class="element" draggable="true" data-group="18" data-period="5">Xe</div><div class="element" draggable="true" data-group="1" data-period="6">Cs</div><div class="element" draggable="true" data-group="2" data-period="6">Ba</div><div class="element" draggable="true" data-group="3" data-period="6">La</div><div class="element" draggable="true" data-group="3" data-period="6">Ce</div><div class="element" draggable="true" data-group="3" data-period="6">Pr</div><div class="element" draggable="true" data-group="3" data-period="6">Nd</div><div class="element" draggable="true" data-group="3" data-period="6">Pm</div><div class="element" draggable="true" data-group="3" data-period="6">Sm</div><div class="element" draggable="true" data-group="3" data-period="6">Eu</div><div class="element" draggable="true" data-group="3" data-period="6">Gd</div><div class="element" draggable="true" data-group="3" data-period="6">Tb</div><div class="element" draggable="true" data-group="3" data-period="6">Dy</div><div class="element" draggable="true" data-group="3" data-period="6">Ho</div><div class="element" draggable="true" data-group="3" data-period="6">Er</div><div class="element" draggable="true" data-group="3" data-period="6">Tm</div><div class="element" draggable="true" data-group="3" data-period="6">Yb</div><div class="element" draggable="true" data-group="3" data-period="6">Lu</div><div class="element" draggable="true" data-group="4" data-period="6">Hf</div><div class="element" draggable="true" data-group="5" data-period="6">Ta</div><div class="element" draggable="true" data-group="6" data-period="6">W</div><div class="element" draggable="true" data-group="7" data-period="6">Re</div><div class="element" draggable="true" data-group="8" data-period="6">Os</div><div class="element" draggable="true" data-group="9" data-period="6">Ir</div><div class="element" draggable="true" data-group="10" data-period="6">Pt</div><div class="element" draggable="true" data-group="11" data-period="6">Au</div><div class="element" draggable="true" data-group="12" data-period="6">Hg</div><div class="element" draggable="true" data-group="13" data-period="6">Tl</div><div class="element" draggable="true" data-group="14" data-period="6">Pb</div><div class="element" draggable="true" data-group="15" data-period="6">Bi</div><div class="element" draggable="true" data-group="16" data-period="6">Po</div><div class="element" draggable="true" data-group="17" data-period="6">At</div><div class="element" draggable="true" data-group="18" data-period="6">Rn</div><div class="element" draggable="true" data-group="1" data-period="7">Fr</div><div class="element" draggable="true" data-group="2" data-period="7">Ra</div><div class="element" draggable="true" data-group="3" data-period="7">Ac</div><div class="element" draggable="true" data-group="3" data-period="7">Th</div><div class="element" draggable="true" data-group="3" data-period="7">Pa</div><div class="element" draggable="true" data-group="3" data-period="7">U</div><div class="element" draggable="true" data-group="3" data-period="7">Np</div><div class="element" draggable="true" data-group="3" data-period="7">Pu</div><div class="element" draggable="true" data-group="3" data-period="7">Am</div><div class="element" draggable="true" data-group="3" data-period="7">Cm</div><div class="element" draggable="true" data-group="3" data-period="7">Bk</div><div class="element" draggable="true" data-group="3" data-period="7">Cf</div><div class="element" draggable="true" data-group="3" data-period="7">Es</div><div class="element" draggable="true" data-group="3" data-period="7">Fm</div><div class="element" draggable="true" data-group="3" data-period="7">Md</div><div class="element" draggable="true" data-group="3" data-period="7">No</div><div class="element" draggable="true" data-group="3" data-period="7">Lr</div><div class="element" draggable="true" data-group="4" data-period="7">Rf</div><div class="element" draggable="true" data-group="5" data-period="7">Db</div><div class="element" draggable="true" data-group="6" data-period="7">Sg</div><div class="element" draggable="true" data-group="7" data-period="7">Bh</div><div class="element" draggable="true" data-group="8" data-period="7">Hs</div><div class="element" draggable="true" data-group="9" data-period="7">Mt</div><div class="element" draggable="true" data-group="10" data-period="7">Ds</div><div class="element" draggable="true" data-group="11" data-period="7">Rg</div><div class="element" draggable="true" data-group="12" data-period="7">Cn</div><div class="element" draggable="true" data-group="13" data-period="7">Nh</div><div class="element" draggable="true" data-group="14" data-period="7">Fl</div><div class="element" draggable="true" data-group="15" data-period="7">Mc</div><div class="element" draggable="true" data-group="16" data-period="7">Lv</div><div class="element" draggable="true" data-group="17" data-period="7">Ts</div><div class="element" draggable="true" data-group="18" data-period="7">Og</div></div>
+
+<script>
+// Full 118 elements array
+const elements = [
+{symbol:"H", group:1, period:1},{symbol:"He", group:18, period:1},
+{symbol:"Li", group:1, period:2},{symbol:"Be", group:2, period:2},{symbol:"B", group:13, period:2},{symbol:"C", group:14, period:2},{symbol:"N", group:15, period:2},{symbol:"O", group:16, period:2},{symbol:"F", group:17, period:2},{symbol:"Ne", group:18, period:2},
+{symbol:"Na", group:1, period:3},{symbol:"Mg", group:2, period:3},{symbol:"Al", group:13, period:3},{symbol:"Si", group:14, period:3},{symbol:"P", group:15, period:3},{symbol:"S", group:16, period:3},{symbol:"Cl", group:17, period:3},{symbol:"Ar", group:18, period:3},
+{symbol:"K", group:1, period:4},{symbol:"Ca", group:2, period:4},{symbol:"Sc", group:3, period:4},{symbol:"Ti", group:4, period:4},{symbol:"V", group:5, period:4},{symbol:"Cr", group:6, period:4},{symbol:"Mn", group:7, period:4},{symbol:"Fe", group:8, period:4},{symbol:"Co", group:9, period:4},{symbol:"Ni", group:10, period:4},{symbol:"Cu", group:11, period:4},{symbol:"Zn", group:12, period:4},{symbol:"Ga", group:13, period:4},{symbol:"Ge", group:14, period:4},{symbol:"As", group:15, period:4},{symbol:"Se", group:16, period:4},{symbol:"Br", group:17, period:4},{symbol:"Kr", group:18, period:4},
+{symbol:"Rb", group:1, period:5},{symbol:"Sr", group:2, period:5},{symbol:"Y", group:3, period:5},{symbol:"Zr", group:4, period:5},{symbol:"Nb", group:5, period:5},{symbol:"Mo", group:6, period:5},{symbol:"Tc", group:7, period:5},{symbol:"Ru", group:8, period:5},{symbol:"Rh", group:9, period:5},{symbol:"Pd", group:10, period:5},{symbol:"Ag", group:11, period:5},{symbol:"Cd", group:12, period:5},{symbol:"In", group:13, period:5},{symbol:"Sn", group:14, period:5},{symbol:"Sb", group:15, period:5},{symbol:"Te", group:16, period:5},{symbol:"I", group:17, period:5},{symbol:"Xe", group:18, period:5},
+{symbol:"Cs", group:1, period:6},{symbol:"Ba", group:2, period:6},{symbol:"La", group:3, period:6},{symbol:"Ce", group:3, period:6},{symbol:"Pr", group:3, period:6},{symbol:"Nd", group:3, period:6},{symbol:"Pm", group:3, period:6},{symbol:"Sm", group:3, period:6},{symbol:"Eu", group:3, period:6},{symbol:"Gd", group:3, period:6},{symbol:"Tb", group:3, period:6},{symbol:"Dy", group:3, period:6},{symbol:"Ho", group:3, period:6},{symbol:"Er", group:3, period:6},{symbol:"Tm", group:3, period:6},{symbol:"Yb", group:3, period:6},{symbol:"Lu", group:3, period:6},{symbol:"Hf", group:4, period:6},{symbol:"Ta", group:5, period:6},{symbol:"W", group:6, period:6},{symbol:"Re", group:7, period:6},{symbol:"Os", group:8, period:6},{symbol:"Ir", group:9, period:6},{symbol:"Pt", group:10, period:6},{symbol:"Au", group:11, period:6},{symbol:"Hg", group:12, period:6},{symbol:"Tl", group:13, period:6},{symbol:"Pb", group:14, period:6},{symbol:"Bi", group:15, period:6},{symbol:"Po", group:16, period:6},{symbol:"At", group:17, period:6},{symbol:"Rn", group:18, period:6},
+{symbol:"Fr", group:1, period:7},{symbol:"Ra", group:2, period:7},{symbol:"Ac", group:3, period:7},{symbol:"Th", group:3, period:7},{symbol:"Pa", group:3, period:7},{symbol:"U", group:3, period:7},{symbol:"Np", group:3, period:7},{symbol:"Pu", group:3, period:7},{symbol:"Am", group:3, period:7},{symbol:"Cm", group:3, period:7},{symbol:"Bk", group:3, period:7},{symbol:"Cf", group:3, period:7},{symbol:"Es", group:3, period:7},{symbol:"Fm", group:3, period:7},{symbol:"Md", group:3, period:7},{symbol:"No", group:3, period:7},{symbol:"Lr", group:3, period:7},{symbol:"Rf", group:4, period:7},{symbol:"Db", group:5, period:7},{symbol:"Sg", group:6, period:7},{symbol:"Bh", group:7, period:7},{symbol:"Hs", group:8, period:7},{symbol:"Mt", group:9, period:7},{symbol:"Ds", group:10, period:7},{symbol:"Rg", group:11, period:7},{symbol:"Cn", group:12, period:7},{symbol:"Nh", group:13, period:7},{symbol:"Fl", group:14, period:7},{symbol:"Mc", group:15, period:7},{symbol:"Lv", group:16, period:7},{symbol:"Ts", group:17, period:7},{symbol:"Og", group:18, period:7}
+];
+
+// Create table slots
+function createTable() {
+  const table = document.getElementById("table");
+  for (let period = 1; period <= 7; period++) {
+    for (let group = 1; group <= 18; group++) {
+      const slot = document.createElement("div");
+      slot.className = "element-slot";
+      slot.dataset.group = group;
+      slot.dataset.period = period;
+      table.appendChild(slot);
+    }
+  }
+}
+
+// Create draggable elements
+function createElements() {
+  const pool = document.getElementById("pool");
+  elements.forEach(el => {
+    const div = document.createElement("div");
+    div.className = "element";
+    div.draggable = true;
+    div.textContent = el.symbol;
+    div.dataset.group = el.group;
+    div.dataset.period = el.period;
+    pool.appendChild(div);
+  });
+}
+
+// Drag & Drop
+let dragged = null;
+
+document.addEventListener("dragstart", e => {
+  if (e.target.classList.contains("element")) {
+    dragged = e.target;
+    setTimeout(() => e.target.classList.add("dragging"), 0);
+  }
+});
+
+document.addEventListener("dragend", e => {
+  if (e.target.classList.contains("element")) {
+    e.target.classList.remove("dragging");
+    dragged = null;
+  }
+});
+
+document.addEventListener("dragover", e => {
+  if (e.target.classList.contains("element-slot")) {
+    e.preventDefault();
+  }
+});
+
+document.addEventListener("drop", e => {
+  if (e.target.classList.contains("element-slot") && dragged) {
+    e.preventDefault();
+    const slotGroup = e.target.dataset.group;
+    const slotPeriod = e.target.dataset.period;
+    if (dragged.dataset.group == slotGroup && dragged.dataset.period == slotPeriod) {
+      e.target.appendChild(dragged);
+      dragged.classList.add("correct");
+    } else {
+      alert("Wrong position! Try again.");
+    }
+  }
+});
+
+createTable();
+createElements();
+</script>
+<a href="index.html">⬅ Back to Home</a>
+
+
+</body></html>
